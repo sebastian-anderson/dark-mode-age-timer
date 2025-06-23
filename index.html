@@ -1,40 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123605982-1"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-123605982-1');
-    </script>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Age Timer</title>
-  <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  <script
-  src="https://code.jquery.com/jquery-2.2.4.min.js"
-  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-  crossorigin="anonymous"></script>
-  <script src="app.js"></script>  
+
+  <!-- Google Analytics (original) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123605982-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-123605982-1');
+  </script>
+
+  <!-- Core JS + jQuery -->
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+
+  <!-- Original CSS (leave as-is) -->
   <link rel="stylesheet" href="style.css">
 
+  <!-- Overridden styles for dark mode & layout match -->
   <style>
     body {
       background-color: #222222;
       color: #b0b5b9;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
 
     .age-label {
       color: #4a4a4a;
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin: 0;
     }
 
-    #age {
+    .count {
+      font-size: 3.5rem;
+      font-weight: 600;
+      margin: 0.3em 0 0 0;
+      font-variant-numeric: tabular-nums;
       color: #b0b5b9;
     }
 
@@ -43,6 +58,9 @@
       background-color: #2a2a2a;
       color: #d0d0d0;
       border: 1px solid #444;
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
     }
 
     a {
@@ -52,27 +70,26 @@
 </head>
 <body>
 
-<form id="choose" style="display: none;">
+  <form id="choose" style="display: none;">
     <h1 id="dob" class="age-label">When were you born?</h1>
-
     <footer>
-    <input type="date" name="dob" id="dob-input">
-    <button type="submit" id="submit">Motivate</button>
+      <input type="date" name="dob" id="dob-input">
+      <button type="submit" id="submit">Motivate</button>
     </footer>
-</form>
+  </form>
 
-<div id="timer" style="display: none;">
+  <div id="timer" style="display: none;">
     <h1 class="age-label">AGE</h1>
     <h2 class="count" id="age"></h2>
-</div>
+  </div>
 
-<div id="cite">
+  <div id="cite">
     <h6>Adapted from
-        <a href="https://chrome.google.com/webstore/detail/motivation/ofdgfpchbidcgncgfpdlpclnpaemakoj?hl=en">
-            "Motivation" by maccman.
-        </a>
+      <a href="https://chrome.google.com/webstore/detail/motivation/ofdgfpchbidcgncgfpdlpclnpaemakoj?hl=en">
+        "Motivation" by maccman.
+      </a>
     </h6>
-</div>
+  </div>
 
 </body>
 </html>

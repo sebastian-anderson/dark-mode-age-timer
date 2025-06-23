@@ -15,12 +15,14 @@ html {
   height: 100%;
 }
 
+/* ✅ Your background color */
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-align-items: center;
   -webkit-flex-direction: column;
   -webkit-font-smoothing: antialiased;
   -webkit-justify-content: center;
+  background-color: #222222;
 }
 
 body, input {
@@ -28,8 +30,9 @@ body, input {
   font-family: 'Avenir', 'helvetica neue', helvetica, arial, sans-serif;
 }
 
+/* ✅ Your "AGE" label color */
 .age-label {
-  color: #B0B5B9;
+  color: #4a4a4a;
   font-size: 1.2rem;
   line-height: 1;
   margin: 0 0 0 2px;
@@ -56,10 +59,11 @@ body, input {
 }
 #cite a:active {
   color: rgb(125, 128, 131);
-} 
+}
 
+/* ✅ Your number color */
 .count {
-  color: #494949;
+  color: #b0b5b9;
   margin: 0;
   font-size: 6rem;
   line-height: 1;

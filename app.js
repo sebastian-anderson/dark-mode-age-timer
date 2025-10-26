@@ -1,65 +1,104 @@
-$(document).ready(function(){
-    $("#submit").click(function(e){
-        e.preventDefault();
-    
-        var input = $("#dob-input").val();
-        var dob = new Date(input);
-        save(dob);
-        renderAgeLoop();
-    });
+$(document).ready(function () {
+  // ---- Helpers ----
+  function parseISODateOnly(s) {
+    // Accepts YYYY-MM-DD (avoids timezone surprises)
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || "");
+    if (!m) return null;
+    const y = +m[1], mo = +m[2], d = +m[3];
+    const dt = new Date(y, mo - 1, d);
+    return (dt.getFullYear() === y && dt.getMonth() === mo - 1 && dt.getDate() === d) ? dt : null;
+  }
 
-    function save(dob)
-    {
-        localStorage.dob = dob.getTime();
-    };
+  function readDOBFromURL() {
+    const p = new URLSearchParams(location.search);
+    const s = (p.get("dob") || "").trim();           // e.g. ?dob=2005-09-14
+    return parseISODateOnly(s);
+  }
 
-    function load()
-    {
-        var dob;
-        if (dob = localStorage.getItem("dob"))
-        {
-            return new Date(parseInt(dob));
-        }
-        return -1;
-    };
+  // ---- Storage ----
+  function save(dob) {
+    const t = dob && dob.getTime();
+    if (!Number.isFinite(t)) return false;           // reject invalid
+    localStorage.setItem("dob", String(t));
+    return true;
+  }
 
-    function renderAgeLoop()
-    {
-        var dob = load();
-        $("#choose").css("display", "none");
-        $("#timer").css("display", "block");
+  function load() {
+    // 1) Prefer URL param if provided
+    const urlDOB = readDOBFromURL();
+    if (urlDOB) return urlDOB;
 
-        setInterval(function(){
-            var age = getAge(dob);
-            $("#age").html(age.year + "<sup>." + age.ms + "</sup>");
-        }, 100);
-    };
+    // 2) Fallback to localStorage
+    const raw = localStorage.getItem("dob");
+    if (!raw) return -1;
+    const ts = parseInt(raw, 10);
+    if (!Number.isFinite(ts)) {
+      // Clean up bad value like "NaN"
+      localStorage.removeItem("dob");
+      return -1;
+    }
+    const d = new Date(ts);
+    if (Number.isNaN(d.getTime())) {
+      localStorage.removeItem("dob");
+      return -1;
+    }
+    return d;
+  }
 
-    function renderChoose()
-    {
-        $("#choose").css("display", "block");
-    };
+  // ---- Rendering ----
+  function getAge(dob) {
+    if (!(dob instanceof Date) || Number.isNaN(dob.getTime())) {
+      return { year: "—", ms: "000000000" };
+    }
+    const now = Date.now();
+    const duration = now - dob.getTime();
+    if (!Number.isFinite(duration) || duration < 0) {
+      return { year: "—", ms: "000000000" };
+    }
+    const years = duration / 31556900000; // average year length
+    const parts = years.toFixed(9).split(".");
+    return { year: parts[0], ms: parts[1] || "000000000" };
+  }
 
-    function getAge(dob){
-        var now       = new Date;
-        var duration  = now - dob;
-        var years     = duration / 31556900000;
-        
-        var majorMinor = years.toFixed(9).toString().split('.');
-        
-        return {
-            "year": majorMinor[0],
-            "ms": majorMinor[1]
-        };
-    };
+  function renderAgeLoop(dob) {
+    $("#choose").css("display", "none");
+    $("#timer").css("display", "block");
 
-    function main() {
-        if (load() != -1)
-        {
-            renderAgeLoop();
-        } else {
-            renderChoose();
-        }
-    };
-    main();
+    function tick() {
+      const age = getAge(dob);
+      $("#age").html(age.year + "<sup>." + age.ms + "</sup>");
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function renderChoose() {
+    $("#choose").css("display", "block");
+    $("#timer").css("display", "none");
+  }
+
+  // ---- Events ----
+  $("#submit").on("click", function (e) {
+    e.preventDefault();
+    const input = $("#dob-input").val();         // expects YYYY-MM-DD
+    const dob = parseISODateOnly(input) || new Date(input); // last-chance parse
+
+    if (!dob || Number.isNaN(dob.getTime())) {
+      // keep the chooser visible; do not save
+      return;
+    }
+    if (save(dob)) {
+      renderAgeLoop(dob);
+    }
+  });
+
+  // ---- Bootstrap ----
+  (function main() {
+    const dob = load();
+    if (dob !== -1) {
+      renderAgeLoop(dob);
+    } else {
+      renderChoose();
+    }
+  })();
 });

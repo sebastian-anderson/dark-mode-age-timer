@@ -40,13 +40,17 @@ body, input {
 }
 
 /* Center against the viewport itself, not the page body.
-   Immune to Plash/WKWebView giving the body an odd height. */
+   Immune to Plash/WKWebView giving the body an odd height.
+   --nudge shifts it vertically (set via ?nudge=-100 in the URL);
+   negative moves up, positive moves down. Defaults to 0. */
+:root { --nudge: 0px; }
+
 #timer, #choose {
   position: fixed;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, calc(-50% + var(--nudge)));
+  transform: translate(-50%, calc(-50% + var(--nudge)));
 }
 
 /* ✅ Your "AGE" label color */

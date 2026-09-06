@@ -1,10 +1,6 @@
 *,
 *:before,
 *:after {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -17,16 +13,24 @@ html {
 
 /* ✅ Your background color */
 body {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-align-items: center;
+  min-height: 100vh;
+  /* Standard flexbox (works in Plash / WKWebView) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* Legacy fallback */
+  display: -webkit-flex;
   -webkit-flex-direction: column;
-  -webkit-font-smoothing: antialiased;
+  -webkit-align-items: center;
   -webkit-justify-content: center;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
   background-color: #222222;
 }
 
 body, input {
-  display: -webkit-flex;
   font-family: 'Avenir', 'helvetica neue', helvetica, arial, sans-serif;
 }
 
@@ -35,16 +39,19 @@ body, input {
   color: #4a4a4a;
   font-size: 1.2rem;
   line-height: 1;
-  margin: 0 0 0 2px;
+  margin: 0;
 }
 
 #cite {
   color: #B0B5B9;
   font-size: 1.2rem;
   line-height: 1;
-  margin: 0 0 0 2px;
+  margin: 0;
   position: fixed;
+  left: 0;
+  right: 0;
   bottom: 0;
+  text-align: center;
 }
 
 #cite a {
@@ -108,7 +115,7 @@ button {
 
 footer {
   padding-top: 0.5rem;
-  display: -webkit-flex;
-  -webkit-flex-direction: row;
-  -webkit-justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }

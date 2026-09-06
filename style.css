@@ -1,6 +1,10 @@
 *,
 *:before,
 *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -9,29 +13,40 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  overflow: hidden;
 }
 
 /* ✅ Your background color */
 body {
   min-height: 100vh;
-  /* Standard flexbox (works in Plash / WKWebView) */
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  /* Standard flexbox */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
   /* Legacy fallback */
   display: -webkit-flex;
-  -webkit-flex-direction: column;
   -webkit-align-items: center;
+  -webkit-flex-direction: column;
   -webkit-justify-content: center;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
   background-color: #222222;
 }
 
 body, input {
+  display: -webkit-flex;
   font-family: 'Avenir', 'helvetica neue', helvetica, arial, sans-serif;
+}
+
+/* Center against the viewport itself, not the page body.
+   Immune to Plash/WKWebView giving the body an odd height. */
+#timer, #choose {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 /* ✅ Your "AGE" label color */
@@ -39,19 +54,16 @@ body, input {
   color: #4a4a4a;
   font-size: 1.2rem;
   line-height: 1;
-  margin: 0;
+  margin: 0 0 0 2px;
 }
 
 #cite {
   color: #B0B5B9;
   font-size: 1.2rem;
   line-height: 1;
-  margin: 0;
+  margin: 0 0 0 2px;
   position: fixed;
-  left: 0;
-  right: 0;
   bottom: 0;
-  text-align: center;
 }
 
 #cite a {
@@ -115,7 +127,7 @@ button {
 
 footer {
   padding-top: 0.5rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+  -webkit-justify-content: center;
 }

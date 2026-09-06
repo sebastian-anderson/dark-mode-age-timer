@@ -1,4 +1,20 @@
 $(document).ready(function () {
+  // ---- Vertical nudge (per-display centering) ----
+  // Read ?nudge=-100 from the URL and shift the timer vertically.
+  // Negative moves it UP, positive moves it DOWN. Useful when one
+  // display (e.g. a laptop) centers differently than the others:
+  // point that display's Plash URL at ?dob=...&nudge=-100 and leave
+  // your other monitors at the plain URL.
+  (function applyNudge() {
+    const p = new URLSearchParams(location.search);
+    const raw = p.get("nudge");
+    if (raw === null) return;
+    const px = parseFloat(raw);
+    if (Number.isFinite(px)) {
+      document.documentElement.style.setProperty("--nudge", px + "px");
+    }
+  })();
+
   // ---- Helpers ----
   function parseISODateOnly(s) {
     // Accepts YYYY-MM-DD (avoids timezone surprises)
